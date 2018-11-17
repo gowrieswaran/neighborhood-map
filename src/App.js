@@ -18,7 +18,7 @@ class App extends Component {
 //load the Map using google API
   renderMap = () => {
     loadScript(
-      "https://maps.googleapis.com/maps/api/js?key=AIzaSyAwUURbP3uQNwofohYQNkX3SCDGMkcpWeE&callback=initMap"
+      "https://maps.googleapis.com/maps/api/js?key=API_KEY&callback=initMap"
     );
     window.initMap = this.initMap;
   };
@@ -26,8 +26,8 @@ class App extends Component {
   getVenues = () => {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?";
     const params = {
-      client_id: "VDDKZJUOFFRHHMLU5CWB1C2QHYVMYMEDY4MCRQI3SIWGIUVC",
-      client_secret: "UE3ILI4MYCSB1Y3NYK0AJGGCLDLX4PCUKRVP45HQQYVP3WZH",
+      client_id: "CLIENT_ID",
+      client_secret: "CLIENT_SECRET",
       query: "tourist",
       near: "paris",
       limit: 20,
