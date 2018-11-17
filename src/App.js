@@ -15,14 +15,14 @@ class App extends Component {
   componentDidMount() {
     this.getVenues();
   }
-
+//load the Map using google API
   renderMap = () => {
     loadScript(
       "https://maps.googleapis.com/maps/api/js?key=AIzaSyAwUURbP3uQNwofohYQNkX3SCDGMkcpWeE&callback=initMap"
     );
     window.initMap = this.initMap;
   };
-
+//load the venues using foursquare API
   getVenues = () => {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?";
     const params = {
@@ -33,7 +33,7 @@ class App extends Component {
       limit: 20,
       v: "20180323"
     };
-
+//axios for http requests * https://www.npmjs.com/package/axios*
     axios
       .get(endPoint + new URLSearchParams(params))
       .then(response => {
@@ -51,7 +51,7 @@ class App extends Component {
       });
   };
   initMap = () => {
-    // Create Map
+    // Create Map and Initialize  lat,lng for location
     var map = new window.google.maps.Map(document.getElementById("map"), {
       center: { lat: 48.864716, lng: 2.349014 },
       zoom: 13,
@@ -142,7 +142,7 @@ class App extends Component {
       });
       this.state.markers.push(marker);
 
-      //infowindow.open(map, marker);
+      //marker bounce on click
       marker.addListener("click", () => {
         marker.setAnimation(window.google.maps.Animation.BOUNCE);
         setTimeout(function() {
@@ -157,22 +157,26 @@ class App extends Component {
       });
     });
   };
+// handles query requests and displays the matching location
   updateQuery = query => {
     let displayLocations;
     this.setState({ query: query });
     this.state.markers.map(marker => marker.setVisible(true));
     if (query) {
       const match = new RegExp(escapeRegExp(query), "i");
+      //display locations matching the search
       displayLocations = this.state.venues.filter(myVenue =>
         match.test(myVenue.venue.name)
       );
       this.setState({ venues: displayLocations });
+      //filtering the markers which are not matching the search
       let hideMarkers = this.state.markers.filter(marker =>
         displayLocations.every(myVenue => myVenue.venue.name !== marker.title)
       );
       hideMarkers.forEach(marker => marker.setVisible(false));
       this.setState({ hideMarkers });
     } else {
+      //handles null/empty/unmatched search 
       this.setState({ venues: this.state.showVenue });
       this.state.markers.forEach(marker => marker.setVisible(true));
     }
@@ -193,7 +197,7 @@ class App extends Component {
     );
   }
 }
-
+// loadscript for google maps - reference - https://www.youtube.com/watch?v=ywdxLNjhBYw&t=5s
 function loadScript(url) {
   var index = window.document.getElementsByTagName("script")[0];
   var script = window.document.createElement("script");
